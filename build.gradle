@@ -1,0 +1,92 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.2'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'idea'
+}
+
+group = 'com.jbground.jpa'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    all*.exclude module : 'spring-boot-starter-logging'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    def activeStage = project.hasProperty('profile') ? project.getProperty('profile') : 'development'
+    println('project profile : '+activeStage)
+
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            if ('production'.equalsIgnoreCase(activeStage)) {
+                srcDirs(['src/main/resources', 'src/production/resources'])
+            } else if ('candidate'.equalsIgnoreCase(activeStage)) {
+                srcDirs(['src/main/resources', 'src/candidate/resources'])
+            } else {
+                srcDirs(['src/main/resources', 'src/main/resources'])
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    implementation group: 'com.oracle.database.jdbc', name: 'ojdbc6', version: '11.2.0.4'
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.14.Final'
+    implementation group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.6.14.Final'
+    implementation group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.2.0.Final'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks {
+
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        manifest {
+            attributes 'Main-Class': 'com.jbground.jpa.SpringJpaSampleApplication'
+        }
+        from {
+            configurations.compileClasspath.collect {
+                it.isDirectory() ? it : zipTree(it)
+            }
+        }
+//        from(configurations.runtimeClasspath.collect {
+//            it.isDirectory() ? it : zipTree(it)
+//        }) {
+//            exclude 'META-INF', 'META-INF/**'
+//        }
+    }
+
+    bootJar {
+        archivesBaseName = 'jbground'
+        archiveFileName = 'jbground-jpa.jar'
+        version = '1.0.0'
+    }
+
+}
+
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+    }
+}
