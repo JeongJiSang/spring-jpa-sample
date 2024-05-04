@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/base}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>Example1</title>
+    <script type="text/javascript">
+        function fetchTest(){
+            fetch("/jbground/ajax/vo.do", {
+                method: "POST"
+                , headers: {
+                    "Content-Type": "application/json"
+                    ,
+                }
+                , body: JSON.stringify({
+                    name: "test"
+                    , value: "test"
+                    ,
+                })
+                ,
+            }).then((response) => console.log(response));
+
+            fetch("/jbground/ajax/vo.do", {
+                method: "GET"
+            }).then((res) => res.json()).then((res) => res.status)
+
+            fetch("/jbground/ajax/vo.do", {}).then((res) => res.json()).then((res) => res.status)
+        }
+
+
+        //non-jquery example
+        function nonJqueryExample1(){
+            const xhr = new XMLHttpRequest() //객체 인스턴스 생성
+
+            function connect(){
+                xhr.onreadystatechange = reply();
+                xhr.open("GET", "/jbground/ajax/vo.do");
+                xhr.send();
+            }
+
+            function reply(){
+                if(xhr.readyState === 4){
+                    if(xhr.status === 200){
+                        console.log(xhr.response);
+                        const obj = JSON.parse(xhr.response);
+                        console.log(obj);
+                    }
+                }
+            }
+
+        }
+
+        function nonJqueryExample2(){
+
+            function reqListener(e){
+                console.log(e.currentTarget.response);
+            }
+
+            var oReq = new XMLHttpRequest() //객체 인스턴스 생성
+
+            oReq.addEventListener("load", reqListener);
+            oReq.open("GET", "/jbground/ajax/vo.do");
+            oReq.send();
+        }
+
+
+    </script>
+</head>
+<body>
+<div>메인화면</div>
+
+<form action="/form" method="post">
+    <label for="name">NAME : </label>
+    <input type="text" id="name" name="name">
+
+    <br><br>
+
+    <label for="age"> AGE : </label>
+    <input type="text" id="age" name="age">
+
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

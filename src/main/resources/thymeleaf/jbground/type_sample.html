@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script type="text/javascript">
+
+        window.onload = function() { // window.addEventListener('load', (event) => {와 동일합니다.
+            console.log('페이지 전체가 로드되었습니다.');
+
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("DOM이 준비되었습니다!");
+        });
+
+        function method1(){
+            //xml
+            $.ajax({
+                url: '/datatype/sample1.ajax',
+                method: 'get',
+                dataType : 'xml',
+                success: function (data, status, xhr) {
+                    console.log('xml-----------------')
+                    console.log(data);
+                },
+                error: function (data, status, err) {
+
+                },
+                complete: function () {
+
+                }
+            });
+        }
+
+        $(document).ready(function(){
+
+            document.getElementById("sample2").onclick = function () {
+                //json
+                $.ajax({
+                    url: '/datatype/sample2.ajax',
+                    method: 'GET',
+                    dataType : 'json',
+                    contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+                    success: function (data, status, xhr) {
+                        console.log('json-----------------')
+                        console.log(data);
+                        // console.log(JSON.stringify(data)); //Uncaught SyntaxError: "[object Object]" is not valid JSON 에러 발생
+                        // console.log(JSON.parse(data)); //Uncaught SyntaxError: "[object Object]" is not valid JSON
+                        for(var i = 0; i<data.length; i++){
+                            console.log(data[i].id);
+                            console.log(data[i].title);
+                            console.log(data[i].desc);
+                        }
+                    },
+                    error: function (data, status, err) {
+
+                    },
+                    complete: function () {
+
+                    }
+                });
+
+            }
+
+            document.getElementById("sample3").addEventListener('click', function (){
+                //html
+                $.ajax({
+                    url: '/datatype/sample3.ajax',
+                    method: 'get',
+                    dataType : 'html',
+                    success: function (data, status, xhr) {
+                        console.log('html-----------------')
+                        console.log(data)
+                    },
+                    error: function (data, status, err) {
+
+                    },
+                    complete: function () {
+
+                    }
+                });
+            });
+
+
+            $('#sample4').bind('click', function (){
+                //script
+                $.ajax({
+                    url: '/datatype/sample4.ajax',
+                    method: 'get',
+                    dataType : 'script',
+                    success: function (data, status, xhr) {
+                        console.log('script-----------------')
+                        console.log(data);
+                    },
+                    error: function (data, status, err) {
+
+                    },
+                    complete: function () {
+
+                    }
+                });
+            });
+
+            $("#sample5").click(function(){
+                //jsonp
+                $.ajax({
+                    url: '/datatype/sample5.ajax',
+                    method: 'get',
+                    dataType : 'jsonp',
+                    jsonp: "jsonpCallBack",
+                    success: function (data, status, xhr) {
+                        console.log('jsonp-----------------')
+                        console.log(data);
+                    },
+                    error: function (data, status, err) {
+
+                    },
+                    complete: function () {
+
+                    }
+                });
+
+
+            });
+
+            $("#sample6").on('click',function(){
+                //text
+                $.ajax({
+                    url: '/datatype/sample6.ajax',
+                    method: 'get',
+                    dataType : 'text',
+                    success: function (data, status, xhr) {
+                        console.log('text-----------------')
+                        console.log(data);
+                    },
+                    error: function (data, status, err) {
+
+                    },
+                    complete: function () {
+
+                    }
+                });
+
+            });
+
+
+
+        });
+
+
+    </script>
+</head>
+
+<body>
+    <div>
+        <label for="sample1">sample1 return type : xml</label>
+        <button id="sample1" name="sample1" onclick="method1()">xml</button>
+        <br>
+
+        <label for="sample2">sample2 return type : json</label>
+        <button id="sample2" name="sample2">json</button>
+        <br>
+        <label for="sample3">sample3 return type : html</label>
+        <button id="sample3" name="sample3">html</button>
+        <br>
+        <label for="sample4">sample4 return type : script</label>
+        <button id="sample4" name="sample4">script</button>
+        <br>
+        <label for="sample5">sample5 return type : jsonp</label>
+        <button id="sample5" name="sample5">jsonp</button>
+        <br>
+        <label for="sample6">sample6 return type : text</label>
+        <button id="sample6" name="sample6">text</button>
+    </div>
+
+    <div id="test">
+        <p>html test</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $("#transfer").on('click',function(){
+
+
+                const obj = {};
+                obj['name'] = 'obj_value1';
+                obj['age'] = 'obj_value2';
+                obj['sex'] = 'obj_value3';
+                obj['hp'] = 'obj_value4';
+                obj['desc'] = 'obj_value5';
+
+                //text
+                $.ajax({
+                    url: '/ajax/sample1.ajax',
+                    method: 'get',
+                    dataType : 'text',
+                    data : obj,
+                    success: function (data, status, xhr) {
+                        console.log('sample1-----------------')
+                        console.log(data);
+                    },
+                    error: function (data, status, err) {
+
+                    },
+                    complete: function () {
+
+                    }
+                });
+
+                setTimeout(function () {
+                    const map = new Map();
+                    map.set('name', 'map_value1');
+                    map.set('age', 'map_value2');
+                    map.set('sex', 'map_value3');
+                    map.set('hp', 'map_value4');
+                    map.set('desc', 'map_value5');
+
+                    map.entries();
+
+                    var args = "";
+
+                    var i = 0;
+                    map.forEach((value, key)=>{
+                        if(i > 0){
+                            args += '&';
+                        }
+                        args += key + '=' + value;
+                        i++;
+                    })
+
+                    console.log(args);
+
+                    $.ajax({
+                        url: '/ajax/sample1.ajax',
+                        method: 'get',
+                        dataType : 'text',
+                        data : args,
+                        traditional : true,
+                        success: function (data, status, xhr) {
+                            console.log('sample1-----------------')
+                            console.log(data);
+                        },
+                        error: function (data, status, err) {
+
+                        },
+                        complete: function () {
+
+                        }
+                    });
+                }, 500);
+
+                setTimeout(function () {
+                    $.ajax({
+                        url: '/ajax/sample2.ajax',
+                        method: 'get',
+                        dataType : 'text',
+                        data : obj,
+                        success: function (data, status, xhr) {
+                            console.log('sample2-----------------')
+                            console.log(data);
+                        },
+                        error: function (data, status, err) {
+
+                        },
+                        complete: function () {
+
+                        }
+                    });
+                }, 500);
+
+                setTimeout(function () {
+                    $.ajax({
+                        url: '/ajax/sample3.ajax',
+                        method: 'get',
+                        dataType : 'text',
+                        data : obj,
+                        success: function (data, status, xhr) {
+                            console.log('sample3-----------------')
+                            console.log(data);
+                        },
+                        error: function (data, status, err) {
+
+                        },
+                        complete: function () {
+
+                        }
+                    });
+                }, 500);
+
+                setTimeout(function () {
+                    $.ajax({
+                        url: '/ajax/sample4.ajax',
+                        method: 'get',
+                        dataType : 'text',
+                        data : obj,
+                        success: function (data, status, xhr) {
+                            console.log('sample4-----------------')
+                            console.log(data);
+                        },
+                        error: function (data, status, err) {
+
+                        },
+                        complete: function () {
+
+                        }
+                    });
+                }, 500);
+
+
+                setTimeout(function () {
+                    $.ajax({
+                        url: '/ajax/sample5.ajax',
+                        method: 'post',
+                        dataType : 'text',
+                        data : {name : 'ajax_value1'
+                            , age : 'ajax_value2'
+                            , 'sex' : 'ajax_value3'
+                            , 'hp' : 'ajax_value4'
+                            , 'desc' : 'ajax_value5'},
+                        success: function (data, status, xhr) {
+                            console.log('sample5-----------------')
+                            console.log(data);
+                        },
+                        error: function (data, status, err) {
+
+                        },
+                        complete: function () {
+
+                        }
+                    });
+                }, 1000);
+
+                const array = [];
+                var data1 = {
+                    'name' : 'first_val1'
+                    , 'age' : 'first_val2'
+                    , 'sex' : 'first_val3'
+                    , 'hp' : 'first_val4'
+                    , 'desc' : 'first_val5'
+                };
+                var data2 = {
+                    'name' : 'second_val1'
+                    , 'age' : 'second_val2'
+                    , 'sex' : 'second_val3'
+                    , 'hp' : 'second_val4'
+                    , 'desc' : 'second_val5'
+                };
+                array.push(data1);
+                array.push(data2);
+
+
+                const nameList = ['A', 'B', 'C']
+
+                console.log('sample6-----------------')
+                console.log(array);
+                console.log(JSON.stringify(array))
+                setTimeout(function () {
+                    $.ajax({
+                        url: '/ajax/sample6.ajax',
+                        method: 'post',
+                        dataType : 'text',
+                        traditional: true,
+                        data : {arr : JSON.stringify(array)
+                                , names : nameList},
+                        success: function (data, status, xhr) {
+
+                            console.log(data);
+                        },
+                        error: function (data, status, err) {
+
+                        },
+                        complete: function () {
+
+                        }
+                    });
+                }, 1000);
+            });
+
+            $("#submit").on('click',function(){
+
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+    <div>
+        <form name="form1" action="/ajax/sample7.ajax" method="post">
+            <label for="name"> 이름 : </label>
+            <input type="text" id="name" name="name">
+            <br>
+            <br>
+            <label for="age"> 나이 : </label>
+            <input type="text" id="age" name="age">
+            <br>
+            <br>
+            <label for="sex"> 성별 : </label>
+            <input type="text" id="sex" name="sex">
+            <br>
+            <br>
+            <label for="hp"> 휴대전화 : </label>
+            <input type="text" id="hp" name="hp">
+            <br>
+            <br>
+            <label for="desc"> 기타 : </label>
+            <input type="text" id="desc" name="desc">
+            <button type="submit" id="submit">submit</button>
+        </form>
+        <button type="button" id="transfer">전송</button>
+
+    </div>
+</body>
+</html>
